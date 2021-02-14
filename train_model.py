@@ -45,7 +45,7 @@ validation_generator = test_datagen.flow_from_directory(
     batch_size=batch_size,
     class_mode='binary')
 
-#from keras.applications.resnet50 import ResNet50
+#from keras.applications.vgg19 import VGG19
 
 model = Sequential()
 print(type(model))
@@ -78,11 +78,11 @@ model.compile(
 
 """
 # load model without classifier layers
-model = ResNet50(include_top=False, weights='imagenet',input_shape=(img_width, img_height, 3))
+model = VGG19(include_top=False, input_shape=(img_width, img_height, 3))
 # add new classifier layers
 flat1 = Flatten()(model.layers[-1].output)
-#class1 = Dense(1024, activation='relu')(flat1)
-output = Dense(1, activation='softmax')(flat1)
+class1 = Dense(1024, activation='relu')(flat1)
+output = Dense(1, activation='softmax')(class1)
 # define new model
 model = Model(inputs=model.inputs, outputs=output)
 # summarize
